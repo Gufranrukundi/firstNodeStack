@@ -1,13 +1,21 @@
 const express = require('express');
 const app = express();
 
-app.get('/', (req, res) => {
-  res.send('success');
-});
+const multer = require('multer');
+const cors = require('cors');
+const formData = multer();
 
-app.get('/about', (req, res) => {
-  res.send('we are about');
-});
+const mainRoute = require('./router/main.router.js');
+
+app.use('/', mainRoute);
+app.use(express.urlencoded);
+app.use(express.json);
+app.use(formData.none());
+app.use(
+  cors({
+    origin: '*',
+  })
+);
 
 app.listen(8000, () => {
   console.log('server listening on http://127.0.0.1:8000 port');
